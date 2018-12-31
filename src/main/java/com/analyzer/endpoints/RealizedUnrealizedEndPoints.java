@@ -6,6 +6,8 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
@@ -31,9 +33,12 @@ public class RealizedUnrealizedEndPoints {
 	}
 	
 	@ApiMethod(name = "getProfitAndLoss")
-	public ProfitAndLossDbObject getProfitAndLoss()
+	public HelloWorld getProfitAndLoss()
 	{
-		return ofy().load().type(ProfitAndLossDbObject.class).first().now();
+//		return ofy().load().type(ProfitAndLossDbObject.class).first().now();
+		HelloWorld hw = new HelloWorld();
+		hw.setMessage("this works");
+		return hw ; 
 	}
 
 }

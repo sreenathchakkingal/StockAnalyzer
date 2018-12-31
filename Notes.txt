@@ -1,0 +1,16 @@
+maven commands
+mvn clean package
+mvn appengine:run
+
+gcould methods :
+
+gcloud init
+gcloud auth login
+gcloud config set project stockanalyzer
+
+reference for api changes : 
+details : https://cloud.google.com/endpoints/docs/frameworks/java/test-deploy#generating_and_deploying_an_api_configuration
+summary is  
+mvn endpoints-framework:openApiDocs
+gcloud endpoints services deploy target/openapi-docs/openapi.json => enter the config id in appengine.xml
+Note : to fetch the id if you can't find it form the log of the above command : gcloud endpoints configs list --service=stockanalyzer-225803.appspot.com

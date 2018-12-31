@@ -14,7 +14,7 @@
 
 <env-variables>
     <env-var name="ENDPOINTS_SERVICE_NAME" value="stockanalyzer-225803.appspot.com" />
-    <env-var name="ENDPOINTS_SERVICE_VERSION" value="2018-12-31r2" />
+    <env-var name="ENDPOINTS_SERVICE_VERSION" value="2018-12-31r3" />
 </env-variables>
 
 </appengine-web-app>
