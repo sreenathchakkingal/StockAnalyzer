@@ -1,6 +1,7 @@
 maven commands
 mvn clean package
 mvn appengine:run
+mvn appengine:deploy or use eclipse deploy
 
 gcould methods :
 
@@ -13,4 +14,7 @@ details : https://cloud.google.com/endpoints/docs/frameworks/java/test-deploy#ge
 summary is  
 mvn endpoints-framework:openApiDocs
 gcloud endpoints services deploy target/openapi-docs/openapi.json => enter the config id in appengine.xml
-Note : to fetch the id if you can't find it form the log of the above command : gcloud endpoints configs list --service=stockanalyzer-225803.appspot.com
+Note : to fetch the id if you can't find it from the log of the above command : gcloud endpoints configs list --service=stockanalyzer-225803.appspot.com
+
+to view all apis
+https://console.cloud.google.com/endpoints/api/stockanalyzer-225803.appspot.com/overview?project=stockanalyzer-225803

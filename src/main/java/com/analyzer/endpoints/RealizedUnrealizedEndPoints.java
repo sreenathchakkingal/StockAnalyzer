@@ -40,5 +40,14 @@ public class RealizedUnrealizedEndPoints {
 		hw.setMessage("this works");
 		return hw ; 
 	}
+	
+	@ApiMethod(name = "hitAndTrial")
+	public HelloWorld hitAndTrialMethodName()
+	{
+//		return ofy().load().type(ProfitAndLossDbObject.class).first().now();
+		HelloWorld hw = new HelloWorld();
+		hw.setMessage("hitAndTrial");
+		return hw ; 
+	}
 
 }
