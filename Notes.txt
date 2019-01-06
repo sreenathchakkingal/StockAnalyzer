@@ -1,7 +1,7 @@
 maven commands
 mvn clean package
 mvn appengine:run
-mvn appengine:deploy or use eclipse deploy
+mvn appengine:deploy or right click project in eclipse and click deploy to "app engine standard"
 
 gcould methods :
 
@@ -9,6 +9,12 @@ gcloud init
 gcloud auth login
 gcloud config set project stockanalyzer
 
+=============================================================================
+to trigger : 
+gcloud components install cloud-datastore-emulator : this is one time and is done already. Do this only if you want to update
+
+gcloud beta emulators datastore start --host-port=localhost:8484
+================================================================================================================================================
 reference for api changes : 
 details : https://cloud.google.com/endpoints/docs/frameworks/java/test-deploy#generating_and_deploying_an_api_configuration
 summary is  
@@ -18,3 +24,29 @@ Note : to fetch the id if you can't find it from the log of the above command : 
 
 to view all apis
 https://console.cloud.google.com/endpoints/api/stockanalyzer-225803.appspot.com/overview?project=stockanalyzer-225803
+https://endpointsportal.stockanalyzer-225803.cloud.goog/
+
+to delete versions : https://console.cloud.google.com/appengine/versions?q=search&project=stockanalyzer-225803&serviceId=default&versionssize=50
+===================================================================================================================================================
+Develop/Local setup
+
+SystemProperty.environment.value() == SystemProperty.Environment.Value.Production
+http://localhost:8080/_ah/admin
+http://localhost:8080/_ah/api/explorer
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --user-data-dir=test --unsafely-treat-insecure-origin-as-secure=http://localhost:8080
+eg: http://localhost:8080/_ah/api/analyzer/v1/helloWorld
+http://localhost:8080/_ah/api/syncProdDatastoresToLocal/v1/syncAllScripsDbObjectToLocal
+http://localhost:8080/_ah/api/syncProdDatastoresToLocal/v1/allscripsdbobjectcollection
+
+============================================================================================================
+
+Obectify
+
+https://github.com/objectify/objectify/wiki/Setup
+
+https://github.com/objectify/objectify/wiki/Entities
+
+============================================================================================================
+		
+	Next  : 
+	complete syncAllDataStoresFromProdToLocal

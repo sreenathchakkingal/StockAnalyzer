@@ -1,6 +1,6 @@
 package com.analyzer.domain;
 
-public class HelloWorld {
+public class MessageHolder {
 
 	private String message;
 

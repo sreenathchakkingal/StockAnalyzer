@@ -65,13 +65,44 @@
 		<dependency>
 			<groupId>com.googlecode.objectify</groupId>
 			<artifactId>objectify</artifactId>
-			<version>5.1.22</version>
+			<version>6.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+
+		<!-- dependecies that i added custom to application -->
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.6</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.json/org.json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>org.json</artifactId>
+			<version>chargebee-1.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.goldmansachs/gs-collections-api -->
+		<dependency>
+			<groupId>com.goldmansachs</groupId>
+			<artifactId>gs-collections-api</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+
+
 		<!-- Test Dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -99,7 +130,7 @@
 					</webResources>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
@@ -120,16 +151,16 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>${appengine.maven.plugin.version}</version>
 			</plugin>
-			
+
 			<plugin>
-            <groupId>com.google.cloud.tools</groupId>
-            <artifactId>endpoints-framework-maven-plugin</artifactId>
-            <version>1.0.2</version>
-            <configuration>
-                <hostname>stockanalyzer-225803.appspot.com</hostname>
-            </configuration>
-        </plugin>
-			
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>endpoints-framework-maven-plugin</artifactId>
+				<version>1.0.2</version>
+				<configuration>
+					<hostname>stockanalyzer-225803.appspot.com</hostname>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
