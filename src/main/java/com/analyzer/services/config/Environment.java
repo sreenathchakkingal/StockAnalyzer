@@ -1,8 +1,10 @@
-package com.analyzer.services;
+package com.analyzer.services.config;
 
 import com.google.appengine.api.utils.SystemProperty;
 
 public class Environment {
+	
+	public static final String PROD = "prod";
 	
 	public static boolean isDevEnv()
 	{

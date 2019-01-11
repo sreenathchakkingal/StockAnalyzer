@@ -49,4 +49,5 @@ https://github.com/objectify/objectify/wiki/Entities
 ============================================================================================================
 		
 	Next  : 
+	find where hostnames and other properties are hardcoded and replace with config reader
 	complete syncAllDataStoresFromProdToLocal

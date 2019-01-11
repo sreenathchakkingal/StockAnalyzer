@@ -8,8 +8,9 @@ import java.util.logging.Logger;
 
 import com.analyzer.domain.MessageHolder;
 import com.analyzer.domain.dbo.legacy.AllScripsDbObject;
-import com.analyzer.services.Environment;
 import com.analyzer.services.HttpService;
+import com.analyzer.services.config.ConfigReader;
+import com.analyzer.services.config.Environment;
 import com.analyzer.services.datastore.DatastoreOperations;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -24,6 +25,8 @@ import com.google.appengine.api.utils.SystemProperty;
 
 public class RestoreFromBackUpEndPoints {
 
+	private static final String PROD_END_POINT_PREFIX = ConfigReader.getProjectSetting().getHostName().get(Environment.PROD)+
+						ConfigReader.getProjectSetting().getEndPointPrefix();
 	private static final Logger LOGGER = Logger.getLogger(RestoreFromBackUpEndPoints.class.getName());
 	
 	@ApiMethod(name = "myApiMethodName", httpMethod=HttpMethod.GET)
@@ -67,8 +70,8 @@ public class RestoreFromBackUpEndPoints {
 		LOGGER.info("initialized MessageHolder: "+SystemProperty.environment.value());
 		if(Environment.isDevEnv())
 		{
-			String apiUrl = "https://stockanalyzer-225803.appspot.com/_ah/api/syncProdDatastoresToLocal/v1/allscripsdbobjectcollection";
-			LOGGER.info("apiUrl: "+apiUrl);
+			String apiUrl = PROD_END_POINT_PREFIX+"syncProdDatastoresToLocal/v1/allscripsdbobjectcollection";
+					
 			List<AllScripsDbObject> allScripDbObjects = new HttpService<>(AllScripsDbObject.class).invokeGetReponseAsEntityList(apiUrl);
 			
 			String result ="";

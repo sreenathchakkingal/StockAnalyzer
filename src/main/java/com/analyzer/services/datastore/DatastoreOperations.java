@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.analyzer.services.Environment;
+import com.analyzer.services.config.ConfigReader;
+import com.analyzer.services.config.Environment;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.common.collect.Iterables;
 import com.googlecode.objectify.Key;
@@ -72,10 +73,11 @@ public class DatastoreOperations<E> {
 		{
 			ObjectifyService.init(new ObjectifyFactory(
 					DatastoreOptions.newBuilder()
-			        .setHost("http://localhost:8484")
-			        .setProjectId("stockanalyzer-225803")
+			        .setHost(ConfigReader.getProjectSetting().getDatastoreDevHost())
+			        .setProjectId(ConfigReader.getProjectSetting().getAppId())
 			        .build()
 			        .getService()));
+			
 		}
 		else
 		{
