@@ -15,5 +15,4 @@ public class ConfigReaderTest {
 		String endPoint = ConfigReader.getProjectSetting().getHostName().get(Environment.PROD)+ConfigReader.getProjectSetting().getEndPointPrefix();
 		assertEquals("https://stockanalyzer-225803.appspot.com/_ah/api/", endPoint);
 	}
-
 }

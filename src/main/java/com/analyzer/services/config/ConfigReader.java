@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConfigReader {
 
-	private final static String PROJECT_SETTING_YAML_FILE = "./src/main/resources/stockanayzer-app.yaml";
+	public final static String PROJECT_SETTING_YAML_FILE_DEV_PATH = "./src/main/webapp/WEB-INF/stockanayzer-app.yaml";
+	public final static String PROJECT_SETTING_YAML_FILE_PROD_PATH = "WEB-INF/stockanayzer-app.yaml";
 
 	private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
 	private static ProjectSetting projectSetting = null;
@@ -20,7 +21,8 @@ public class ConfigReader {
 	public static ProjectSetting getProjectSetting() {
 		try {
 			if (projectSetting == null) {
-				projectSetting = MAPPER.readValue(new File(PROJECT_SETTING_YAML_FILE), ProjectSetting.class);
+				String path = Environment.isNoEnv() ? PROJECT_SETTING_YAML_FILE_DEV_PATH : PROJECT_SETTING_YAML_FILE_PROD_PATH;
+				projectSetting = MAPPER.readValue(new File(path), ProjectSetting.class);
 			}
 
 		} catch (IOException e) {

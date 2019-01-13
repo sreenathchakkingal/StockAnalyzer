@@ -69,7 +69,6 @@ public class HttpService<E> {
 		CloseableHttpClient client = HttpClientBuilder.create().build();
 		HttpGet get = new HttpGet(url);
 		String responseAsJsonString = null;
-		LOGGER.info("invoking GET: "+url);
 		try 
 		{
 			responseAsJsonString = client.execute(get, response -> EntityUtils.toString(response.getEntity()));
@@ -78,7 +77,7 @@ public class HttpService<E> {
 			e.printStackTrace();
 			throw new RuntimeException("cannot invoke the rest api.");
 		}
-		LOGGER.info("invoking GET: "+responseAsJsonString.substring(0,100)+" ...");
+		
 		return responseAsJsonString;
 
 	}

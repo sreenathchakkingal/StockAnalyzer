@@ -3,4 +3,4 @@ hostName:
   dev: http://localhost:8080/
   prod: https://stockanalyzer-225803.appspot.com/
 endPointPrefix: _ah/api/
-datastoreDevHost: http://localhost:8484/
+datastoreDevHost: http://localhost:8484

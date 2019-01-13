@@ -1,6 +1,9 @@
-maven commands
-mvn clean package
-mvn appengine:run
+
+
+maven commands (dir : cd E:\codebase\eclipseWorkspaceNew\StockAnalyzer)
+mvn clean package 
+gcloud beta emulators datastore start --host-port=localhost:8484 => datastores to be enabled
+mvn appengine:run : to run locally or using eclipse "run as appengine"
 mvn appengine:deploy or right click project in eclipse and click deploy to "app engine standard"
 
 gcould methods :
@@ -10,7 +13,7 @@ gcloud auth login
 gcloud config set project stockanalyzer
 
 =============================================================================
-to trigger : 
+to start datastore port locally: 
 gcloud components install cloud-datastore-emulator : this is one time and is done already. Do this only if you want to update
 
 gcloud beta emulators datastore start --host-port=localhost:8484
@@ -30,13 +33,10 @@ to delete versions : https://console.cloud.google.com/appengine/versions?q=searc
 ===================================================================================================================================================
 Develop/Local setup
 
-SystemProperty.environment.value() == SystemProperty.Environment.Value.Production
 http://localhost:8080/_ah/admin
-http://localhost:8080/_ah/api/explorer
 "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --user-data-dir=test --unsafely-treat-insecure-origin-as-secure=http://localhost:8080
 eg: http://localhost:8080/_ah/api/analyzer/v1/helloWorld
-http://localhost:8080/_ah/api/syncProdDatastoresToLocal/v1/syncAllScripsDbObjectToLocal
-http://localhost:8080/_ah/api/syncProdDatastoresToLocal/v1/allscripsdbobjectcollection
+http://localhost:8080/_ah/api/syncProdDatastoresToDev/v1/getAllScripsDbObjectsFromProd
 
 ============================================================================================================
 
@@ -49,5 +49,20 @@ https://github.com/objectify/objectify/wiki/Entities
 ============================================================================================================
 		
 	Next  : 
-	find where hostnames and other properties are hardcoded and replace with config reader
-	complete syncAllDataStoresFromProdToLocal
+	//end points required :
+	is put working ?
+	remove <<resource>> from app  engine ?
+	1) get me the list of interesting stocks
+	1 a store the ratings of the stocks
+	2) for a given stock get me the historic prices
+	3) upload portfolio : stock name: qyt : price : buy date
+	4) stock meta data : nse id, industry, fv
+	5) synonyms
+	6) calculate pnl summary, position level, transaction level, by industry
+	7) just show buy and sell as per strategy
+	8) how to mock and test end points 
+	9) test for datastore operations
+	10) try to remove <application>stockanalyzer</application>
+  <version>1</version>
+   from appengine.xml and see
+	
