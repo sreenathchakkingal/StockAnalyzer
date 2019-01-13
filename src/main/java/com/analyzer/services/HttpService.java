@@ -27,12 +27,9 @@ public class HttpService<E> {
 	public List<E> invokeGetReponseAsEntityList(String url) {
 		LOGGER.info("accessing url: "+url);
 		String jsonResponse = invokeGetReponseAsString(url);
-		return convertJsonStringToEntityList(jsonResponse);
-	}
-
-	public E invokeGetReponseAsEntity(String url) {
-		String jsonResponse = invokeGetReponseAsString(url);
-		return convertJsonStringToEntity(jsonResponse);
+		List<E> entitities = convertJsonStringToEntityList(jsonResponse);
+		LOGGER.info("fetched "+entitities.size()+"from url");
+		return entitities;
 	}
 
 	public E convertJsonStringToEntity(String jsonAsString) {

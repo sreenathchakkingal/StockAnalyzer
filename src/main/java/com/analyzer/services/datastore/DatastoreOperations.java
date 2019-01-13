@@ -24,35 +24,22 @@ public class DatastoreOperations {
 	private static final Logger LOGGER = Logger.getLogger(DatastoreOperations.class.getName());
 
 	public static <E> List<E> fetchEntities(Class<E> type, String filterAttribute, String filterValue) {
-		if(isInValidFilters(filterAttribute, filterValue))
-		{
-			throw new RuntimeException("filterAttribute: "+filterAttribute+"  , filterValue: "+filterValue+ "Either both has to be null or not null");
-		}
-		
-		init(type);
-		LOGGER.info("Initialized.fetching entities of type: "+type.getName());
-		
-		boolean isWithFilter = filterAttribute!=null && filterValue!=null;
-		
-		List<E> entities = isWithFilter ? ofy().load().<E>kind(Key.getKind(type)).filter(filterAttribute, filterValue).list() : 
-											ofy().load().type(type).list();
-		
-		LOGGER.info("returning: "+entities.size()+": of type "+type.getName());
-		return entities;
+			init(type);
+			LOGGER.info("Initialized.fetching entities of type: "+type.getName());
+			
+			boolean isWithFilter = StringUtils.isNoneBlank(filterAttribute, filterValue);
+			
+			LOGGER.info("isWithFilter: "+isWithFilter+" filterAttribute: "+filterAttribute+" filterValue: "+filterValue);
+			
+			List<E> entities = isWithFilter ?  ofy().load().type(type).filter(filterAttribute, filterValue).list() :
+												ofy().load().type(type).list();
+			
+			LOGGER.info("returning: "+entities.size()+": of type "+type.getName());
+			return entities;
 	}
 	
-	public static boolean isInValidFilters(String filterAttribute, String filterValue) {
-		return StringUtils.isAnyBlank(filterAttribute, filterValue);
-	}
-
 	public static <E> List<E> fetchEntities(Class<E> type) {
 		return fetchEntities(type, null, null);
-	}
-	
-	public static <E> void deleteAndSaveEntitiesInChunks(Class<E> type, Iterable<E> entities) 
-	{
-		deleteEntities(type, entities);
-		saveEntitiesInChunks(type, entities);
 	}
 	
 	public static <E> void saveEntitiesInChunks(Class<E> type, Iterable<E> entities) 
@@ -67,14 +54,31 @@ public class DatastoreOperations {
 		});
 	}
 	
-	public static <E> void  deleteEntities(Class<E> type, Iterable<E> entities)
+	public static <E> void  deleteEntitiesInChunks(Class<E> type)
 	{
 		init(type);
-		ofy().delete().entities(entities).now();  
+		List<Key<E>> keys = ofy().load().type(type).keys().list();
+		Iterable<List<Key<E>>> partitionedIterables = Iterables.partition(keys, GOOGLE_APP_ENGINE_CHUNK_SIZE);
+		partitionedIterables.forEach(entitiesInChunk ->  deleteEntitiesByKeys(type, entitiesInChunk)); 
 	}
-
+	
+	
+	private static <E> void  deleteEntitiesByKeys(Class<E> type, List<Key<E>> keys)
+	{
+		sleep();
+		LOGGER.info("will delete: "+keys.size()+" entries");
+		ofy().delete().keys(keys).now();
+	}
+	
 	private static <E> Map<Key<E>, E> saveEntities( Class<E> type, Iterable<E> entities) 
 	{
+		sleep();
+		init(type);
+		LOGGER.info("going to save");
+		return ofy().save().entities(entities).now();	
+	}
+
+	private static void sleep() {
 		LOGGER.info("sleep");
 		try {
 			Thread.sleep(3000);
@@ -82,9 +86,6 @@ public class DatastoreOperations {
 			e.printStackTrace();
 		}
 		LOGGER.info("active");
-		init(type);
-		LOGGER.info("going to save");
-		return ofy().save().entities(entities).now();	
 	}
 
 	private static <E> void init(Class<E> type) 

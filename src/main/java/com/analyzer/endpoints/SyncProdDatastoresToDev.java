@@ -1,18 +1,19 @@
 package com.analyzer.endpoints;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.analyzer.domain.MessageHolder;
+import com.analyzer.domain.WatchList;
 import com.analyzer.domain.dbo.legacy.AllScripsDbObject;
-import com.analyzer.services.HttpService;
+import com.analyzer.endpoints.helper.SyncProdDatastoresToDevHelper;
 import com.analyzer.services.config.ConfigReader;
 import com.analyzer.services.config.Environment;
 import com.analyzer.services.datastore.DatastoreOperations;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
-import com.google.appengine.api.utils.SystemProperty;
 
 
 @Api(
@@ -26,44 +27,32 @@ public class SyncProdDatastoresToDev {
 						ConfigReader.getProjectSetting().getEndPointPrefix()+"syncProdDatastoresToDev/v1/";
 	private static final Logger LOGGER = Logger.getLogger(SyncProdDatastoresToDev.class.getName());
 	
-	@ApiMethod(name = "allscripsdbobjectcollection", httpMethod=HttpMethod.GET)
-	public List<AllScripsDbObject> getAllScripsDbObjectsFromProd()
+	@ApiMethod(name = "getAllScripsDbObjects", httpMethod=HttpMethod.GET)
+	public List<AllScripsDbObject> getAllScripsDbObjects()
 	{
-		LOGGER.info("in getAllScripsDbObjectsFromProd");
+		LOGGER.info("in getAllScripsDbObjects");
 		List<AllScripsDbObject> entities = DatastoreOperations.fetchEntities(AllScripsDbObject.class);
 		
 		LOGGER.info("number of entities: "+entities.size());
 		return entities;
 	}	
 
-	@ApiMethod(name = "syncAllScripsDbObjectToDev", httpMethod=HttpMethod.GET)
-	public MessageHolder syncAllScripsDbObjectToDev()
+	@ApiMethod(name = "getAllWatchListedStockNames", httpMethod=HttpMethod.GET)
+	public List<WatchList> getAllWatchListedStockNames()
 	{
-		MessageHolder hw = new MessageHolder();
-		LOGGER.info("initialized MessageHolder: "+SystemProperty.environment.value());
-		if(Environment.isDevEnv())
-		{
-			String apiUrl = PROD_END_POINT_PREFIX+"allscripsdbobjectcollection";
-					
-			List<AllScripsDbObject> allScripDbObjects = new HttpService<>(AllScripsDbObject.class).invokeGetReponseAsEntityList(apiUrl);
-			
-			String result ="";
-			for (int i=0;i<10;i++) 
-			{
-				result = result + allScripDbObjects.get(i).getNseId() + " , ";
-			}
-			LOGGER.info("initialized resposne: "+result);
-			
-			DatastoreOperations.saveEntitiesInChunks(AllScripsDbObject.class, allScripDbObjects);
-			
-			hw.setMessage("synced " +allScripDbObjects.size() +" AllScripsDbObject objects");
-			
-			return hw;
-		}
-		else
-		{
-			throw new RuntimeException("this api should be invoked only from the dev");
-		}
+		LOGGER.info("in getAllWatchListedStockNames");
+		List<WatchList> entities = DatastoreOperations.fetchEntities(WatchList.class);
+		
+		LOGGER.info("number of entities: "+entities.size());
+		return entities;
 	}	
-	
+
+	@ApiMethod(name = "syncAllRegisteredDatastoresFromProdToDev", httpMethod=HttpMethod.GET)
+	public List<MessageHolder>  syncAllRegisteredDatastoresFromProdToDev()
+	{
+		List<MessageHolder> messages = new ArrayList<>();
+		messages.add(SyncProdDatastoresToDevHelper.syncDatastoresFromProdToDev(AllScripsDbObject.class, PROD_END_POINT_PREFIX+"allscripsdbobjectcollection"));
+		messages.add(SyncProdDatastoresToDevHelper.syncDatastoresFromProdToDev(WatchList.class, PROD_END_POINT_PREFIX+"watchlistcollection"));
+		return messages;
+	}
 }

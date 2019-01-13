@@ -14,5 +14,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class WatchList {
-	@Id String nseId;
+	@Id Long id; 
+	
+	String nseId;
 }

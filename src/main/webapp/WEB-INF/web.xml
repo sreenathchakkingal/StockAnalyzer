@@ -8,7 +8,10 @@
 		<servlet-class>com.google.api.server.spi.EndpointsServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value>com.analyzer.endpoints.RealizedUnrealizedEndPoints,com.analyzer.endpoints.SyncProdDatastoresToDev</param-value>
+			<param-value>
+				com.analyzer.endpoints.SyncProdDatastoresToDev,
+				com.analyzer.endpoints.PopulateNewDatastoresFromBackup
+			</param-value>
 		</init-param>
 	</servlet>
 	<!-- Route API method requests to the backend. -->
